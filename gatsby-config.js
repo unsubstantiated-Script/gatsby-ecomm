@@ -23,7 +23,7 @@ module.exports = {
           'open sans:800i',
         ],
       },
-    },
+    } /*
     {
       resolve: 'gatsby-source-shopify',
       options: {
@@ -31,7 +31,7 @@ module.exports = {
         accessToken: process.env.GATSBY_ACCESS_TOKEN,
         apiVersion: '2020-07',
       },
-    },
+    },*/,
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,
