@@ -1,11 +1,27 @@
 const path = require('path');
 
-exports.onCreateWebpackConfig = ({ actions }) => {
-  actions.setWebpackConfig({
-    resolve: {
-      modules: [path.resolve(__dirname, 'src'), 'node_modules'],
-    },
-  });
+//Haz a bug...
+//ran npm install -D @hot-loader/react-dom
+// exports.onCreateWebpackConfig = ({ actions }) => {
+//   actions.setWebpackConfig({
+//     resolve: {
+//       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+//     },
+//   });
+// };
+
+//Solves a bug...
+exports.onCreateWebpackConfig = ({ stage, actions }) => {
+  if (stage.startsWith('develop')) {
+    actions.setWebpackConfig({
+      resolve: {
+        alias: {
+          'react-dom': '@hot-loader/react-dom',
+        },
+        modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+      },
+    });
+  }
 };
 
 exports.createPages = async ({ graphql, actions }) => {
