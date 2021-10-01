@@ -1,29 +1,37 @@
 import React, { useState } from 'react';
-import Client from 'shopify-buy';
 
 //Dynamically queries the Shopify API
+import Client from 'shopify-buy';
+
+//This builds the client so we can query the API all in this place alone. Also connects to the GraphQL behind the scenes
 const client = Client.buildClient({
   domain: `${process.env.GATSBY_SHOP_NAME}.myshopify.com`,
   storefrontAccessToken: process.env.GATSBY_ACCESS_TOKEN,
 });
 
+//Reset back to empty
 const defaultState = {
   cart: {},
 };
 
+//Context wrapper so we can access state/functions across the app
 const CartContext = React.createContext(defaultState);
 export default CartContext;
 
+//Here that context is being used...
 export function CartContextProvider({ children }) {
+  //checkout does not get wiped if page is refreshed. Bounces back and forth between local state and local storage
   const [checkout, setCheckout] = useState(
     JSON.parse(
       typeof window !== 'undefined' ? localStorage.getItem('checkout') : null
     )
   );
 
+  //If checkout is complete...user gets a confirmation
   const [successfulOrder, setSuccessfulOrder] = useState(null);
   const checkoutId = checkout?.id;
 
+  //Loads up any existing checkout into our local state notice the use of the client variable below
   React.useEffect(() => {
     const getCheckout = async () => {
       if (checkoutId && typeof window !== 'undefined') {
@@ -42,6 +50,7 @@ export function CartContextProvider({ children }) {
     getCheckout();
   }, [setCheckout, setSuccessfulOrder, checkoutId]);
 
+  //Getting a product by its ID and returning its object
   async function getProductById(productId) {
     const product = await client.product.fetch(productId);
     return product;
