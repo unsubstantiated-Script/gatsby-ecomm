@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Client from 'shopify-buy';
 
+//Dynamically queries the Shopify API
 const client = Client.buildClient({
   domain: `${process.env.GATSBY_SHOP_NAME}.myshopify.com`,
   storefrontAccessToken: process.env.GATSBY_ACCESS_TOKEN,
