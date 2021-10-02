@@ -1,8 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+/* eslint-disable jsx-a11y/no-onchange */
+import React, { useContext, useEffect, useState } from 'react';
 import { graphql } from 'gatsby';
 import { Layout, ImageGallery } from 'components';
-import { Grid } from './styles';
+import { Grid, SelectWrapper, Price } from './styles';
 import CartContext from '../../context/CartContext';
+
+//Stuff used to grab items from the URL
+//navigates to a url and retuns stuff from our current url
+import { navigate, useLocation } from '@reach/router';
+//reads the query string to get the id we need to load an item
+import queryString from 'query-string';
 
 //This is a page query for one specific product
 export const query = graphql`
@@ -31,12 +38,41 @@ export const query = graphql`
 const ProductTemplate = props => {
   const { getProductById } = useContext(CartContext);
 
+  const [product, setProduct] = useState(null);
+
+  const [selectedVariant, setSelectedVariant] = useState(null);
+
+  const { search, origin, pathname } = useLocation();
+
+  //Getting the id back from the url
+  const variantId = queryString.parse(search).variant;
+
   useEffect(() => {
     // Loading up the id from the API query
     getProductById(props.data.shopifyProduct.shopifyId).then(result => {
-      console.log(result);
+      setProduct(result);
+      setSelectedVariant(
+        result.variants.find(({ id }) => id === variantId) || result.variants[0]
+      );
     });
-  }, [getProductById, props.data.shopifyProduct.shopifyId]);
+  }, [
+    getProductById,
+    setProduct,
+    props.data.shopifyProduct.shopifyId,
+    variantId,
+  ]);
+
+  const handleVariantChange = e => {
+    const newVariant = product?.variants.find(v => v.id === e.target.value);
+    setSelectedVariant(newVariant);
+    //allows us to navigate to this location using the plugin above
+    navigate(
+      //loads up the path we're trying to get to
+      `${origin}${pathname}?variant=${encodeURIComponent(newVariant.id)}`,
+      //swaps out the current url with the one we're trying to get allows user to backtrack in the browser
+      { replace: true }
+    );
+  };
 
   return (
     <Layout>
@@ -44,9 +80,36 @@ const ProductTemplate = props => {
         <div>
           <h1>{props.data.shopifyProduct.title}</h1>
           <p>{props.data.shopifyProduct.description}</p>
+          {/* Gotta make sure both below are in existence before we render the select list */}
+          {product?.availableForSale && !!selectedVariant && (
+            <>
+              {product.variants.length > 1 && (
+                <SelectWrapper>
+                  <strong>Variant</strong>
+                  <select
+                    value={selectedVariant.id}
+                    onChange={handleVariantChange}
+                  >
+                    {product?.variants.map(v => (
+                      <option key={v.id} value={v.id}>
+                        {v.title}
+                      </option>
+                    ))}
+                  </select>
+                </SelectWrapper>
+              )}
+
+              {!!selectedVariant && <Price>${selectedVariant.price}</Price>}
+            </>
+          )}
         </div>
+
         <div>
-          <ImageGallery images={props.data.shopifyProduct.images} />
+          <ImageGallery
+            selectedVariantImageId={selectedVariant?.image.id}
+            images={props.data.shopifyProduct.images}
+            showVariantGallery={product !== null && product.variants.length > 1}
+          />
         </div>
       </Grid>
     </Layout>
