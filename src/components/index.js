@@ -6,3 +6,6 @@ export * from './Header';
 export * from './Cart';
 export * from './Input';
 export * from './Button';
+export * from './QuantityAdjuster';
+export * from './RemoveLineItem';
+export * from './CartContents';
