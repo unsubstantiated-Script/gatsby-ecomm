@@ -17,19 +17,22 @@ export const query = graphql`
   query ProductQuery($shopifyId: String) {
     shopifyProduct(shopifyId: { eq: $shopifyId }) {
       # this is what we need to pass to shopify to find this product
-      shopifyId
-      title
-      description
-      images {
-        id
-        localFile {
-          childImageSharp {
-            fluid(maxWidth: 300) {
-              ...GatsbyImageSharpFluid_withWebp
-            }
-          }
-        }
-      }
+      # shopifyId
+      # title
+      # description
+      # images {
+      #   id
+      #   localFile {
+      #     childImageSharp {
+      #       fluid(maxWidth: 300) {
+      #         ...GatsbyImageSharpFluid_withWebp
+      #       }
+      #     }
+      #   }
+      # }
+
+      # Replaced with GraphQL fragment provided by Gatsby
+      ...ShopifyProductFields
     }
   }
 `;

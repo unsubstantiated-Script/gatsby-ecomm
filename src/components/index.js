@@ -9,3 +9,5 @@ export * from './Button';
 export * from './QuantityAdjuster';
 export * from './RemoveLineItem';
 export * from './CartContents';
+export * from './HomepageCollectionsGrid';
+export * from './CollectionTile';
