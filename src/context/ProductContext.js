@@ -10,6 +10,12 @@ const query = graphql`
           products {
             # This is coming in from a fragment
             ...ShopifyProductFields
+            handle
+            priceRange {
+              minVariantPrice {
+                amount
+              }
+            }
           }
           title
           description
