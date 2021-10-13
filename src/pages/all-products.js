@@ -59,7 +59,7 @@ export default function AllProducts() {
 
   return (
     <Layout>
-      <h4> {products.length} Products</h4>
+      <h4> {filteredProducts.length} Products</h4>
       <Content>
         <Filters />
         <div>
