@@ -3,19 +3,30 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 //These collections get sorted alphabetically
 const query = graphql`
+  fragment ProductTileFields on ShopifyProduct {
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+      }
+    }
+  }
   {
+    allShopifyProduct {
+      edges {
+        node {
+          ...ShopifyProductFields
+          ...ProductTileFields
+        }
+      }
+    }
     allShopifyCollection(sort: { fields: title, order: ASC }) {
       edges {
         node {
           products {
             # This is coming in from a fragment
             ...ShopifyProductFields
-            handle
-            priceRange {
-              minVariantPrice {
-                amount
-              }
-            }
+            ...ProductTileFields
           }
           title
           description
@@ -44,16 +55,16 @@ export default ProductContext;
 
 export function ProductContextProvider({ children }) {
   //Destructuring the data from above
-  const { allShopifyCollection } = useStaticQuery(query);
+  const { allShopifyCollection, allShopifyProduct } = useStaticQuery(query);
   return (
     <ProductContext.Provider
       value={{
-        products: [],
+        products: allShopifyProduct.edges.map(({ node }) => node),
         //This will extract just the collection info we need into a new array
         collections: allShopifyCollection.edges.map(({ node }) => node),
       }}
     >
-      {children}
+      {children}{' '}
     </ProductContext.Provider>
   );
 }
