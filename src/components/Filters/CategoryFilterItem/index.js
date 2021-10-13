@@ -1,7 +1,8 @@
 import React from 'react';
 import { Checkbox } from 'components';
 import { CategoryFilterItemWrapper } from './styles';
-import { navigate, useLocation } from '@reach/router';
+import { navigate } from 'gatsby';
+import { useLocation } from '@reach/router';
 import queryString from 'query-string';
 
 export function CategoryFilterItem({ title, id }) {
@@ -11,6 +12,9 @@ export function CategoryFilterItem({ title, id }) {
   //grabbing the c handle as given below if it exists, makes sure each new entry is split by a comma if already in there. If there's nothing there, we set to an empty array.
   const collectionIds = qs.c?.split(',').filter(c => !!c) || [];
   const checked = collectionIds?.find(cId => cId === id);
+
+  //Making sure any search term is preserved
+  const searchTerm = qs.s;
 
   const onClick = () => {
     let navigateTo = '/all-products';
@@ -29,10 +33,20 @@ export function CategoryFilterItem({ title, id }) {
       newIds = collectionIds.map(cId => encodeURIComponent(cId));
     }
 
-    //Making sure nothing shows up in the URL if there's nothing selected
-
-    if (newIds.length) {
+    //If there's just filters and no search
+    if (newIds.length && !searchTerm) {
       navigate(`${navigateTo}?c=${newIds.join(',')}`);
+      //If there's a search AND filter term
+    } else if (newIds.length && !!searchTerm) {
+      navigate(
+        `${navigateTo}?c=${newIds.join(',')}&s=${encodeURIComponent(
+          searchTerm
+        )}`
+      );
+      //If there's only a search term
+    } else if (!newIds.length && !!searchTerm) {
+      navigate(`${navigateTo}?s=${encodeURIComponent(searchTerm)}`);
+      //If there's no search and no filter
     } else {
       navigate(`${navigateTo}`);
     }

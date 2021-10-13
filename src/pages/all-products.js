@@ -21,6 +21,7 @@ export default function AllProducts() {
   const qs = queryString.parse(search);
   const selectedCollectionIds = qs.c?.split(',').filter(c => !!c) || [];
   const selectedCollectionIdsMap = {};
+  const searchTerm = qs.s;
 
   selectedCollectionIds.forEach(cId => {
     selectedCollectionIdsMap[cId] = true;
@@ -55,16 +56,53 @@ export default function AllProducts() {
     return true;
   };
 
-  const filteredProducts = products.filter(filterByCategory);
+  const filterBySearchTerm = product => {
+    //looking for the search term in the object by its position in the array. -1 means it doesn't exist
+    if (searchTerm) {
+      return product.title.toLowerCase().indexOf(searchTerm.toLowerCase()) >= 0;
+    }
+    //if it's not found, it'll return all the things
+    return true;
+  };
+
+  const filteredProducts = products
+    .filter(filterByCategory)
+    .filter(filterBySearchTerm);
 
   return (
     <Layout>
-      <h4> {filteredProducts.length} Products</h4>
+      {!!searchTerm && !!filteredProducts.length && (
+        <h3>
+          Search term: <strong>'{searchTerm}'</strong>
+        </h3>
+      )}
+      {!!filteredProducts.length && (
+        <h4> {filteredProducts.length} Products</h4>
+      )}
       <Content>
         <Filters />
-        <div>
-          <ProductsGrid products={filteredProducts} />
-        </div>
+        {!!filteredProducts.length ? (
+          <div>
+            <ProductsGrid products={filteredProducts} />
+          </div>
+        ) : (
+          <div>
+            <h3>
+              <span>Oh no! Nothing Matches</span>
+              &nbsp; '{searchTerm}'
+            </h3>
+            <div>
+              To help with your search, why not try:
+              <br />
+              <br />
+              <ul>
+                <li>Check your spelling </li>
+                <li>Use fewer words </li>
+                <li>Try using a different search term </li>
+              </ul>
+            </div>
+          </div>
+        )}
       </Content>
     </Layout>
   );
