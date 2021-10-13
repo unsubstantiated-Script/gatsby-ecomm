@@ -5,9 +5,9 @@ import { HomepageCollectionsGrid } from 'components';
 
 const IndexPage = () => {
   const { collections } = useContext(ProductContext);
-  console.log(collections);
   return (
     <Layout>
+      <SEO title="Home Page" description="The Mad Hatter Store Home Page" />
       {/* Making sure we only get the collections that are not featured hats  */}
       <HomepageCollectionsGrid
         collections={collections.filter(
