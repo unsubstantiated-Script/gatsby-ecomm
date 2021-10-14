@@ -7,7 +7,7 @@ import {
   ProductQuantityAdder,
   Button,
   SEO,
-} from 'components';
+} from '../../components';
 import { Grid, SelectWrapper, Price } from './styles';
 import CartContext from '../../context/CartContext';
 

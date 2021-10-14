@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Layout, Filters, ProductsGrid, SEO } from 'components';
-import ProductContext from 'context/ProductContext';
+import { Layout, Filters, ProductsGrid, SEO } from '../components';
+import ProductContext from '../context/ProductContext';
 import styled from 'styled-components';
 import queryString from 'query-string';
 import { useLocation } from '@reach/router';

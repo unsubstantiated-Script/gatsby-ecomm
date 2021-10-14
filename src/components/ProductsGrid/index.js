@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProductsGridWrapper } from './styles';
-import { ProductTile } from 'components';
+import { ProductTile } from '../ProductTile';
 
 export function ProductsGrid({ products }) {
   return (

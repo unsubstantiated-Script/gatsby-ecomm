@@ -1,7 +1,11 @@
 import React, { useContext } from 'react';
-import { Layout, SEO, FeaturedProducts } from 'components';
-import ProductContext from 'context/ProductContext';
-import { HomepageCollectionsGrid } from 'components';
+import {
+  Layout,
+  SEO,
+  FeaturedProducts,
+  HomepageCollectionsGrid,
+} from '../components';
+import ProductContext from '../context/ProductContext';
 
 const IndexPage = () => {
   const { collections } = useContext(ProductContext);

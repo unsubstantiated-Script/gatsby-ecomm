@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Input } from '../Input';
 import { Button } from '../Button';
 import { ProductQuantityAdderWrapper } from './styles';
-import CartContext from 'context/CartContext';
+import CartContext from '../../context/CartContext';
 
 export function ProductQuantityAdder({ variantId, available }) {
   const [quantity, setQuantity] = useState(1);

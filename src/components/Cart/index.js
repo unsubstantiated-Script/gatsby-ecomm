@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { CartWrapper } from './styles';
 import { FaShoppingCart } from 'react-icons/fa';
-import CartContext from 'context/CartContext';
+import CartContext from '../../context/CartContext';
 
 export function Cart() {
   const { checkout } = useContext(CartContext);

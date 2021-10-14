@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import CartContext from 'context/CartContext';
+import CartContext from '../../context/CartContext';
 import { CartHeader, CartItem, CartFooter, Footer } from './styles';
 import { QuantityAdjuster } from '../QuantityAdjuster';
 import { RemoveLineItem } from '../RemoveLineItem';

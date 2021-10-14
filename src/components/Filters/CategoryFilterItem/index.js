@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox } from 'components';
+import { Checkbox } from '../../Checkbox';
 import { CategoryFilterItemWrapper } from './styles';
 import { navigate } from 'gatsby';
 import { useLocation } from '@reach/router';
