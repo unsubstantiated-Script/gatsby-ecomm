@@ -16,4 +16,12 @@ export const productFields = graphql`
       }
     }
   }
+  fragment ProductTileFields on ShopifyProduct {
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+      }
+    }
+  }
 `;

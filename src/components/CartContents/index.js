@@ -43,7 +43,7 @@ export function CartContents() {
         </CartItem>
       ))}
 
-      {!!checkout?.lineItems ? (
+      {!!checkout?.lineItems.length > 0 ? (
         <CartFooter>
           <div>
             <strong>Total: </strong>

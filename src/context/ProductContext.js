@@ -3,14 +3,6 @@ import { graphql, useStaticQuery } from 'gatsby';
 
 //These collections get sorted alphabetically
 const query = graphql`
-  fragment ProductTileFields on ShopifyProduct {
-    handle
-    priceRange {
-      minVariantPrice {
-        amount
-      }
-    }
-  }
   {
     allShopifyProduct {
       edges {
